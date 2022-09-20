@@ -37,15 +37,22 @@ def isfloat(num):
     except ValueError:
         return False
 
-def tr_time(s,form, nametime = ''):
-    s = s.split(' ')
-    ap =  s[-1]
-    s = s[0]+' '+s[1]
-    datetime_object = datetime.strptime(s,form)
-    time_change = dt.timedelta(hours=12)
-    if(ap == 'PM'):
-        datetime_object = datetime_object + time_change
-    return datetime_object
+def tr_time(form = "%d/%m/%y %H:%M:%S",s = '', df = None, nametime = ''):
+    if(s != ''):
+        print(s)
+        s = s.split(' ')
+        ap =  s[-1]
+        s = s[0]+' '+s[1]
+        datetime_object = datetime.strptime(s,form)
+        time_change = dt.timedelta(hours=12)
+        if(ap == 'PM'):
+            datetime_object = datetime_object + time_change
+        return datetime_object
+    else:
+        df[nametime] = df[nametime].apply(lambda x: tr_time(form,x))
+
+
+
 def drop(df,vcolumns):
     df.drop(columns = vcolumns, inplace=True)
     
@@ -111,7 +118,7 @@ def read_df(path, remove_nan =  False,sub = [],deci ='.',drop=[], treat_time = F
         if(drop!=[]):
             df.drop(columns = drop, inplace=True)
         if(treat_time):
-            df['time'] = df.apply(lambda x: treat_time(x))
+            tr_time(form, df =  dfaux, nametime = nametime)
         try:
             df.drop(columns = ['Unnamed: 0'],inplace=True)
         except:
