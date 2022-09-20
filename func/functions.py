@@ -1,3 +1,16 @@
+import pandas as pd
+import pyspark.pandas as ps
+import datetime as dt
+from datetime import datetime
+import operator
+from IPython.display import clear_output
+from pyspark.sql import SparkSession
+import operator
+import matplotlib.pyplot as plt
+from scipy import stats
+
+
+
 def typec(df):
     for x in df.columns:
         print(x,': ',type(df.loc[0,x]))
