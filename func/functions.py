@@ -8,6 +8,21 @@ from pyspark.sql import SparkSession
 import operator
 import matplotlib.pyplot as plt
 from scipy import stats
+import os
+# assign directory
+
+
+
+
+
+def get_files(directory):
+    v = []
+    for filename in os.listdir(directory):
+        f = os.path.join(directory, filename)
+    # checking if it is a file
+        if os.path.isfile(f):
+               v.append(f)
+    return v
 
 
 
