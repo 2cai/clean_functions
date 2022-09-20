@@ -5,7 +5,7 @@ import setuptools
 #    long_description = fh.read()
 
 setuptools.setup(
-    name="brainlib",
+    name="clean_functions",
     version="1.0.0",
     author="...",
     author_email="...",
