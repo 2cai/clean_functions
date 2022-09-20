@@ -207,7 +207,7 @@ def calculate_r2(df,to_compare,columns = []):
                        # print("========================")
                     else:
                         print('EMPTY DF')
-def tr_time(form,s = '', df = None, nametime = ''):
+def tr_time(form = "%d/%m/%y %H:%M:%S",s = '', df = None, nametime = ''):
     if(s != ''):
         print(s)
         s = s.split(' ')
