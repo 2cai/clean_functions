@@ -1,2 +1,2 @@
-name="brain_lib/brainlib"
+name="clean_functions/func"
 __version__ = "1.0.0"
