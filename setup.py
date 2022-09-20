@@ -5,7 +5,7 @@ import setuptools
 #    long_description = fh.read()
 
 setuptools.setup(
-    name="clean_functions",
+    name="cleanfunctions",
     version="1.0.0",
     author="...",
     author_email="...",
