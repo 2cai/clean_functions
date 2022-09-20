@@ -119,6 +119,8 @@ def read_df(path, remove_nan =  False,sub = [],deci ='.',drop=[], treat_time = F
             df.drop(columns = drop, inplace=True)
         if(treat_time):
             tr_time(form, df =  dfaux, nametime = nametime)
+        if(nametime != ''):
+            df[nametime] = pd.to_nametime(pd[nametime])
         try:
             df.drop(columns = ['Unnamed: 0'],inplace=True)
         except:
