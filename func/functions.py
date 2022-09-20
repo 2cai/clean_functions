@@ -116,7 +116,7 @@ def read_df(path, remove_nan =  False,sub = [],deci ='.',drop=[], treat_time = F
         if(drop!=[]):
             df.drop(columns = drop, inplace=True)
         if(treat_time):
-            df['time'] = df.swifter.apply(lambda x: treat_time(x))
+            df['time'] = df.apply(lambda x: treat_time(x))
         try:
             df.drop(columns = ['Unnamed: 0'],inplace=True)
         except:
