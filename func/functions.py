@@ -108,11 +108,6 @@ def read_df(path, remove_nan =  False,sub = [],deci ='.',drop=[], treat_time = F
                 df.dropna(inplace=True)
             else:
                 df.dropna(subset = sub, inplace=True)
-        if(nametime !=''):
-            try:
-                df[nametime] = pd.to_datetime(df[nametime])
-            except:
-                pass
         if(drop!=[]):
             df.drop(columns = drop, inplace=True)
         if(treat_time):
