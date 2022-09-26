@@ -15,7 +15,40 @@ import os
 
 
 
+def ctag(df,name_target):
+    df[name_target] = np.nan
+  
 
+def match_times(df1, df2, x, timex, y, timey, started_time,lag_time,d):
+    for k in range(started_time,len(df1)):
+        date = df1.iat[k,timex] + lag_time
+        #print(date)
+        #clear_output()
+        i = 0
+        j = len(peso)
+        re = np.nan
+        while(i<j-1):
+                m =  int((i+j)/2)
+                pdate = df2.iat[m,timey]
+                re = pdate
+                if(pdate >= date):
+                    j = m 
+                else:
+                    i=m
+        re1 = df2.iat[j,timey]
+        re2 = df2.iat[i,timey]
+        if( abs((re1 - date).total_seconds()) <= d.total_seconds()):
+            print('here1')
+            print(abs((re1 - date).total_seconds()))
+            df1.iat[k, x] = df2.iat[j,y]
+            print(df1.iat[k,x])
+        elif(abs((re2 - date).total_seconds()) <= d.total_seconds()):
+            print('here2')
+            print(abs((re2 - date).total_seconds()))
+            df1.iat[k, x] = df2.iat[i,y]
+            print(df1.iat[k,x])
+        else:
+            print('not')
 
 def get_files(directory):
     v = []
@@ -204,10 +237,10 @@ def group_for_columns(df,dftime,lennew,nlabels,nametime=""):
     return pd.concat(v)
   
 
-def calculate_r2(df,to_compare,columns = []):
+def calculate_r2(df,to_compare,columns = [], nametime = ''):
     if(columns == []):
         for x in df.columns:
-            if(x!=to_compare):
+            if(x!=to_compare and x!=nametime):
                     dfaux = df.copy()
                     dfaux.dropna(subset = [x,to_compare],inplace=True)
                     dfaux  = cloc(dfaux,x,'!=',0)
@@ -266,3 +299,105 @@ def display_side_by_side(*args,titles=cycle([''])):
         html_str+=df.to_html().replace('table','table style="display:inline"')
         html_str+='</td></th>'
     display_html(html_str,raw=True)
+
+    
+def printc(*argv):
+    for args in argv:
+        print(args.columns)
+
+        
+def match_times(df1, df2, x, timex, y, timey,lag_time,d,newc = '',norepeat =False):
+    print('here')
+    df2aux = cloc(df2,df2.columns[timey],'>=',df1.iat[0,timex])
+    print(len(df2aux))
+    be2 = df2aux.index[0]
+    en2 = df2aux.index[-1]
+    df1aux = cloc(df1,df1.columns[timex],'>=',df2.iat[0,timey])
+    be1 =  df1aux.index[0]
+    en1 = df1aux.index[-1]
+    print(be2,en2)
+    print(be1,en1)
+    if(newc!=''):
+        print(newc)
+        df1[newc] = np.nan
+   # print(be,end)
+    for k in range(be2,en2+1):
+        if(k%1000==0):
+            print(k/len(df2))
+        date = df2.iat[k,timey] - lag_time
+        #print(date)
+        #clear_output()
+        i = be1
+        j = en1 
+        while(i<j-1):
+                m =  int((i+j)/2)
+                pdate = df1.iat[m,timex]
+                if(pdate >= date):
+                    j = m 
+                else:
+                    i=m
+        #print(pdate)
+        #print(i,j)
+        rei = df1.iat[i,timex]
+        rej = df1.iat[j,timex]
+        deltai = abs((rei-date).total_seconds())
+        deltaj = abs((rej-date).total_seconds())
+        if(deltai < deltaj and deltai <= d.total_seconds()):
+       #     print('get lower;','delta = ',abs((rei - date).total_seconds())) 
+            if(norepeat):
+                    if(df1[i,x]!=np.nan):
+                        print('already used')
+                    else:
+                        df1.iat[i,x] = df2.iat[k,y]
+            else:
+                df1.iat[i,x] = df2.iat[k,y]
+        elif(deltaj < deltai and deltaj <= d.total_seconds()):
+        #    print('get upper;','delta = ',abs((rej - date).total_seconds())) 
+            if(norepeat):
+                    if(df1[j,x]!=np.nan):
+                        print('already used')
+                    else:
+                        df1.iat[j,x] = df2.iat[k,y]
+            else:
+                df1.iat[j,x] = df2.iat[k,y]
+        elif(deltaj == deltai and deltaj <=d.total_seconds()):
+       #     print('get lower;','delta = ',abs((rei - date).total_seconds())) 
+            if(norepeat):
+                    if(df1[i,x]!=np.nan):
+                        print('already used')
+                    else:
+                        df1.iat[i,x] = df2.iat[k,y]
+            else:
+                df1.iat[i,x] = df2.iat[k,y]
+        else:
+            print('NOT FOUND')
+            
+def get_splited(df,sep,target, shuff = False):
+    dfaux = df.copy()
+    if(shuff):
+        dfaux  = dfaux.sample(frac=1).reset_index(drop=True)
+    val_sep = int(dfaux.shape[0]*sep)
+    y =  dfaux[target].copy()
+    dfaux.drop(columns =[target],inplace=True) 
+    x_train = dfaux.iloc[:val_sep]
+    x_test = dfaux.iloc[val_sep:]
+    y_train = y.iloc[:val_sep]
+    y_test = y.iloc[val_sep:]
+        
+    return x_train,y_train,x_test,y_test  
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+def bplot(df,x,y,be=-1,end=-1):
+    if(be!=-1 and end!=-1):
+        xpoints = df[x][be:end]
+        ypoints = df[y][be:end]
+        
+    else:
+        xpoints = df[x]
+        ypoints = df[y]
+    plt.scatter(xpoints, ypoints)
+    plt.show()
