@@ -63,7 +63,6 @@ def dropc(df,vcolumns):
 
 def cloc(df,eq,val):
     eq = eq.split(" ")
-    eq
     ops = {
     '+' : operator.add,
     '-' : operator.sub,
@@ -78,9 +77,7 @@ def cloc(df,eq,val):
     '>' : operator.gt,
     '>=' : operator.ge,   
     }
-    return df.loc[ ops[eq[1]](df[eq[0]],val)]
-
-
+    return df.loc[ops[eq[1]](df[eq[0]],val)]
 
 def savecsv_spark(df,path,overwrite=True):
     sparkDF= spark.createDataFrame(df)
