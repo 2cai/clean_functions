@@ -17,38 +17,6 @@ import os
 
 def ctag(df,name_target):
     df[name_target] = np.nan
-  
-
-def match_times(df1, df2, x, timex, y, timey, started_time,lag_time,d):
-    for k in range(started_time,len(df1)):
-        date = df1.iat[k,timex] + lag_time
-        #print(date)
-        #clear_output()
-        i = 0
-        j = len(peso)
-        re = np.nan
-        while(i<j-1):
-                m =  int((i+j)/2)
-                pdate = df2.iat[m,timey]
-                re = pdate
-                if(pdate >= date):
-                    j = m 
-                else:
-                    i=m
-        re1 = df2.iat[j,timey]
-        re2 = df2.iat[i,timey]
-        if( abs((re1 - date).total_seconds()) <= d.total_seconds()):
-            print('here1')
-            print(abs((re1 - date).total_seconds()))
-            df1.iat[k, x] = df2.iat[j,y]
-            print(df1.iat[k,x])
-        elif(abs((re2 - date).total_seconds()) <= d.total_seconds()):
-            print('here2')
-            print(abs((re2 - date).total_seconds()))
-            df1.iat[k, x] = df2.iat[i,y]
-            print(df1.iat[k,x])
-        else:
-            print('not')
 
 def get_files(directory):
     v = []
@@ -88,12 +56,14 @@ def tr_time(form = "%d/%m/%y %H:%M:%S",s = '', df = None, nametime = ''):
 
 
 
-def drop(df,vcolumns):
+def dropc(df,vcolumns):
     df.drop(columns = vcolumns, inplace=True)
     
 
 
-def cloc(df,column,op,val):
+def cloc(df,eq,val):
+    eq = eq.split(" ")
+    eq
     ops = {
     '+' : operator.add,
     '-' : operator.sub,
@@ -108,7 +78,7 @@ def cloc(df,column,op,val):
     '>' : operator.gt,
     '>=' : operator.ge,   
     }
-    return df.loc[ ops[op](df[column], val)]
+    return df.loc[ ops[eq[1]](df[eq[0]],val)]
 
 
 
@@ -191,9 +161,11 @@ def group(df,time,nametime ="",concatval = ""):
     column_names.sort()
     newdf = pd.DataFrame(columns = final_column_names)
     incount = 0
+    
     for i in range(0,len(df)-time,time):
         dfaux = df[i:min(i+time,len(df)-1)]
         ri(dfaux)
+        dfaux = cloc(dfaux, nametime, '<=', dfaux[nametime][0] + timedelta(seconds=time))
         print("here")
         sz_newdf = len(final_column_names)
         newdf.loc[len(newdf.index)]= [0]*len(newdf.columns)
@@ -304,7 +276,6 @@ def display_side_by_side(*args,titles=cycle([''])):
 def printc(*argv):
     for args in argv:
         print(args.columns)
-
         
 def match_times(df1, df2, x, timex, y, timey,lag_time,d,newc = '',norepeat =False):
     print('here')
@@ -317,6 +288,7 @@ def match_times(df1, df2, x, timex, y, timey,lag_time,d,newc = '',norepeat =Fals
     en1 = df1aux.index[-1]
     print(be2,en2)
     print(be1,en1)
+    not_found = 0
     if(newc!=''):
         print(newc)
         df1[newc] = np.nan
@@ -370,8 +342,10 @@ def match_times(df1, df2, x, timex, y, timey,lag_time,d,newc = '',norepeat =Fals
             else:
                 df1.iat[i,x] = df2.iat[k,y]
         else:
-            print('NOT FOUND')
-            
+            not_found = not_found +1
+    print('not_found =',not_found)
+
+        
 def get_splited(df,sep,target, shuff = False):
     dfaux = df.copy()
     if(shuff):
