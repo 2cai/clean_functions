@@ -81,7 +81,7 @@ def generate_model_simulate(df,features,target,mas,shift,sep = 0.8, train = True
             name = col+'_MA'+f"{val}"
             data [name] = data [col].rolling(window=val).mean()
             ma_sensors.append(name)
-    for x in target+ma_sensors:
+    for x in target:
         data[x] = data[x].shift(periods= -shift)
     #data ['4203_WIT_001_t_h'] = data ['4203_WIT_001_t_h'].shift(periods=-G13)
     data.dropna(inplace = True)
@@ -92,7 +92,7 @@ def generate_model_simulate(df,features,target,mas,shift,sep = 0.8, train = True
     model.add(layers.LSTM(128, return_sequences=True, input_shape=(1,aux.shape[2]-len(target))))
     model.add(layers.LSTM(256, return_sequences=False))
     model.add(layers.Dense(25))
-    model.add(layers.Dense(len(target)))
+    model.add(layers.Dense(len(target)),activation )
     model.compile(loss='mse', optimizer='adam', metrics=['mae','mse'])
 #     return data_normalized
     m = apply_model(df=data_normalized, epochs=1,model=model,sep=sep,shuff=False,features= features+ma_sensors, target =target,train = train)
