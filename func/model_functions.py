@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
+import sys
+sys.path.append("/Workspace/Repos/gabrielcaiaffa@brainiall.com/cleanfunctions/func/")
+from utility_functions import * 
+from plot_functions import *
 
 
 def ytest_ypred(model):
