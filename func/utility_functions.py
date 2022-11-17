@@ -7,6 +7,14 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import math
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler 
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
 # assign directory
 
 

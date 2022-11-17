@@ -1,5 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import math
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler 
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
 from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 import sys
