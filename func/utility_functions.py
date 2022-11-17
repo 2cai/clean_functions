@@ -7,7 +7,7 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import spark
+import pyspark as spark
 import math
 import numpy as np
 import pandas as pd
