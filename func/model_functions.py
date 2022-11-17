@@ -71,7 +71,7 @@ def apply_model(df, features,target,model,sep=0.8,shuff = False, epochs=1, train
     return X_train, y_train, X_test, y_test, model, k 
 
 
-def generate_model_simulate(df,features,target,mas,shift, train = True):
+def generate_model_simulate(df,features,target,mas,shift,sep = 0.8, train = True):
     ma_sensors = []
     data  = dfc(df,features+target)
     data .dropna(inplace=True)
@@ -95,5 +95,5 @@ def generate_model_simulate(df,features,target,mas,shift, train = True):
     model.add(layers.Dense(len(target)))
     model.compile(loss='mse', optimizer='adam', metrics=['mae','mse'])
 #     return data_normalized
-    m = apply_model(df=data_normalized, epochs=1,model=model,sep=0.99,shuff=False,features= features+ma_sensors, target =target,train = train)
+    m = apply_model(df=data_normalized, epochs=1,model=model,sep=sep,shuff=False,features= features+ma_sensors, target =target,train = train)
     return m
