@@ -44,7 +44,7 @@ def invnormadf(df_norma, df_original,cols = []):
              mi = df_original[x].min()
              aux_df[x] = df_norma(ma-mi)+mi
         return aux_df
-def get_splited(df,sep,target, shuff = False):
+def get_splited(df,sep,features,target, shuff = False):
     '''Split data in train and test: 
         sep = Percentage that will be used to train
         shuff = if True shuffle data'''
@@ -52,13 +52,12 @@ def get_splited(df,sep,target, shuff = False):
     if(shuff):
         dfaux  = dfaux.sample(frac=1).reset_index(drop=True)
     val_sep = int(dfaux.shape[0]*sep)
-    y =  dfaux[target].copy()
-    dfaux.drop(columns =[target],inplace=True) 
-    x_train = dfaux.iloc[:val_sep]
-    x_test = dfaux.iloc[val_sep:]
+    x = df[features]
+    y = df[target]
+    x_train = x.iloc[:val_sep]
+    x_test = x.iloc[val_sep:]
     y_train = y.iloc[:val_sep]
     y_test = y.iloc[val_sep:]
-        
     return x_train,y_train,x_test,y_test  
 
 def apply_model(df, features,target,model,sep=0.8,shuff = False, epochs=1, train = True):
