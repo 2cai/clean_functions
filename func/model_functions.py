@@ -68,7 +68,7 @@ def apply_model(df, features,target,model,sep=0.8,shuff = False, epochs=1, train
     y_test = k[3].to_numpy().reshape(-1,1,k[3].shape[1])
     if train == True:
         model.fit(X_train, y_train,use_multiprocessing = True, epochs=epochs)
-    return X_train, y_train, X_test, y_test, model
+    return X_train, y_train, X_test, y_test, model, k 
 
 
 def generate_model_simulate(df,features,target,mas,shift, train = True):
@@ -82,7 +82,7 @@ def generate_model_simulate(df,features,target,mas,shift, train = True):
             data [name] = data [col].rolling(window=val).mean()
             ma_sensors.append(name)
     for x in target+ma_sensors:
-        data [x] = data [x].shift(periods= -shift)
+        data[x] = data[x].shift(periods= -shift)
     #data ['4203_WIT_001_t_h'] = data ['4203_WIT_001_t_h'].shift(periods=-G13)
     data.dropna(inplace = True)
     data_normalized= normadf(data)

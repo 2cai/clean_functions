@@ -7,7 +7,6 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import pyspark as spark
 import math
 import numpy as np
 import pandas as pd
@@ -211,13 +210,6 @@ def dfc(df,cols):
     for x in cols:
        dfr[x] = df[x]
     return dfr
-
-
-def read_spark(path):
-    df = spark.read.table(path)
-    df = df.toPandas()
-    return df
-
 
 
 def treat(x,col):
