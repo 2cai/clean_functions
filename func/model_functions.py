@@ -66,7 +66,6 @@ def apply_model(df, features,target,model,sep=0.8,shuff = False, epochs=1, train
     y_train = k[1].to_numpy().reshape(-1,1,k[1].shape[1])
     X_test = k[2].to_numpy().reshape(-1,1,k[2].shape[1])
     y_test = k[3].to_numpy().reshape(-1,1,k[3].shape[1])
-    model = -1
     if train == True:
         model.fit(X_train, y_train,use_multiprocessing = True, epochs=epochs)
     return X_train, y_train, X_test, y_test, model
